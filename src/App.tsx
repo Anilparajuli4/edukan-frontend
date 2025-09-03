@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { Provider } from "react-redux"
 import store from "./store/store"
+import Home from "./pages/home/Home"
+import Register from "./pages/auth/register/Register"
 
 function App() {
   return (
@@ -8,8 +10,8 @@ function App() {
 <Provider store={store}>
    <Router>
   <Routes>
-    <Route path ='/' element={<h1>this is home</h1>} />
-    <Route path ='/register' element={<h1>this is register</h1>} />
+    <Route path ='/' element={<Home/>} />
+    <Route path ='/register' element={<Register/>} />
     <Route path ='/login' element={<h1>this is login</h1>} />
   </Routes>
  </Router>
