@@ -61,7 +61,7 @@ export default authSlice.reducer
 
 
 
-function register(data:RegisterData){
+export function register(data:RegisterData){
 
     return async function registerThunk(dispatch:any){
         dispatch(setStatus('loading'))
@@ -82,7 +82,7 @@ function register(data:RegisterData){
 }
 
 
-function login (data:LoginData){
+export function login (data:LoginData){
 return async function loginThunk(dispatch:any){
     dispatch(setStatus('loading'))
 try {

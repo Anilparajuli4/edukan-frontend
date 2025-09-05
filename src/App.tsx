@@ -3,6 +3,7 @@ import { Provider } from "react-redux"
 import store from "./store/store"
 import Home from "./pages/home/Home"
 import Register from "./pages/auth/register/Register"
+import Login from "./pages/auth/login/Login"
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
   <Routes>
     <Route path ='/' element={<Home/>} />
     <Route path ='/register' element={<Register/>} />
-    <Route path ='/login' element={<h1>this is login</h1>} />
+    <Route path ='/login' element={<Login/>} />
   </Routes>
  </Router>
 </Provider>
