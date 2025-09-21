@@ -1,10 +1,9 @@
 import {createSlice, type PayloadAction} from '@reduxjs/toolkit'
-import axios from 'axios'
-import App from '../App';
+
 import API from '../http';
 
 
-type Status = 'loading' | 'success' | 'error';
+export type Status = 'loading' | 'success' | 'error'; 
 
 interface RegisterData{
     userName: string,
@@ -26,7 +25,8 @@ interface User{
 
 interface AuthState{
     user: User,
-    status: Status
+    status: Status,
+    resetStatus: Status,
 }
 
 
@@ -34,7 +34,8 @@ interface AuthState{
 
 const initialState:AuthState = {
    user:{} as User,
-   status: 'loading'
+   status: 'loading',
+   resetStatus: 'loading'
 }
 
 const authSlice = createSlice({
@@ -45,8 +46,14 @@ const authSlice = createSlice({
              state.user = action.payload
         },
 
-        setStatus(state:AuthState, action:PayloadAction<Status>){
+        setStatus(state:AuthState,  action:PayloadAction<Status>){
             state.status = action.payload
+        },
+        resetStatus(state:AuthState ){
+           state.status = 'loading'
+        },
+        setToken(state:AuthState, action:PayloadAction<Status>){
+            state.user.token = action.payload
         }
     }
 })
@@ -54,7 +61,8 @@ const authSlice = createSlice({
 
 
 
-export const {setUser, setStatus} = authSlice.actions
+
+export const {setUser, setStatus, resetStatus, setToken} = authSlice.actions
 export default authSlice.reducer
 
 
@@ -65,11 +73,15 @@ export function register(data:RegisterData){
 
     return async function registerThunk(dispatch:any){
         dispatch(setStatus('loading'))
+      
+        
     try {
-          const response =  await API.post('register', data)
+          const response =  await API.post('auth/register', data)
 
-     if(response.status === 201){
+
+     if(response.status === 201 ||  response.status === 200){
  dispatch(setStatus('success'))
+
      }else{
  dispatch(setStatus('error'))
      }
@@ -86,13 +98,17 @@ export function login (data:LoginData){
 return async function loginThunk(dispatch:any){
     dispatch(setStatus('loading'))
 try {
-    const response = await API.post('login', data)
-    if(response.status === 201){
+    const response = await API.post('auth/login', data)
+    if(response.status === 201 ||  response.status === 200){
  dispatch(setStatus('success'))
+dispatch(setToken(response.data.data))
+localStorage.setItem('token', JSON.stringify(response.data.data))
     }else{
  dispatch(setStatus('error'))
     }
-} catch (error) {
+} catch (error:any) {
+ 
+    
      dispatch(setStatus('error'))
 }
 }

@@ -68,9 +68,10 @@ const Form: React.FC<PropsType> = ({type, onSubmit}) => {
 
   const handleSubmit = async () => {
     
-    if (!validateForm()) {
-      return;
-    }
+    // if (!validateForm()) {
+    //   return;
+    // }
+
 
     setIsLoading(true);
     
@@ -78,7 +79,6 @@ const Form: React.FC<PropsType> = ({type, onSubmit}) => {
     onSubmit(formData)
     
     setIsLoading(false);
-    alert('Registration successful! Welcome to our store!');
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

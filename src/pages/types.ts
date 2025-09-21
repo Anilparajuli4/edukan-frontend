@@ -16,6 +16,14 @@ export interface UserDataType{
     userName:string
 } 
 
+export interface LoginDataType{
+email:string,
+    password:string,
+}
+
 export const useAppDispatch: () => AppDispatch = useDispatch;
+
+
+
 
 // export type AppDispatch = ThunkDispatch<any, any, AnyAction>

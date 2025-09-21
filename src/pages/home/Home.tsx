@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Star, ArrowRight,  Heart, Eye, Zap, Shield, Truck, RotateCcw } from 'lucide-react';
 import Navbar from '../../globals/components/navbar/Navbar';
+import { useAppDispatch } from '../types';
+import { fetchProduct } from '../../store/productSlice';
+import { useAppSelector } from '../../store/hook';
+import { Link } from 'react-router-dom';
+
+
 
 interface HeroSlide {
   title: string;
@@ -29,6 +35,18 @@ const Home: React.FC = () => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [hoveredProduct, setHoveredProduct] = useState(null);
+const dispatch = useAppDispatch()
+const  {product} = useAppSelector((state)=> state.products)
+
+
+
+
+useEffect(()=>{
+dispatch(fetchProduct())
+},[])
+
+
+// console.log('product data', data);
 
   const heroSlides: HeroSlide[] = [
     {
@@ -257,13 +275,14 @@ const Home: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.map((product:any) => (
+            {product.map((product:any) => (
               <div 
                 key={product.id}
                 className="group relative bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 overflow-hidden hover:border-purple-500/50 transition-all duration-500 hover:scale-105"
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
+                <Link to={`/productdetail/${product.id}`}>
                 {/* Product Badge */}
                 <div className="absolute top-4 left-4 z-20">
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -279,8 +298,8 @@ const Home: React.FC = () => {
                 {/* Product Image */}
                 <div className="relative h-64 overflow-hidden">
                   <img 
-                    src={product.image} 
-                    alt={product.name}
+                    src={product.productImageUrl} 
+                    alt={product.productName}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -296,6 +315,7 @@ const Home: React.FC = () => {
                       <Heart className="w-5 h-5" />
                     </button>
                   </div>
+                  
                 </div>
 
                 {/* Product Info */}
@@ -313,20 +333,22 @@ const Home: React.FC = () => {
                   </div>
                   
                   <h3 className="font-semibold text-lg mb-3 group-hover:text-purple-400 transition-colors duration-300">
-                    {product.name}
+                    {product.productName}
                   </h3>
                   
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <span className="text-2xl font-bold text-white">${product.price}</span>
-                      <span className="text-gray-500 line-through text-sm">${product.originalPrice}</span>
+                      <span className="text-2xl font-bold text-white">Rs{product.productPrice}</span>
+                      <span className="text-gray-500 line-through text-sm">Rs{product.originalPrice}</span>
                     </div>
                     <button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25">
                       Add to Cart
                     </button>
                   </div>
                 </div>
+        </Link>
               </div>
+               
             ))}
           </div>
         </div>
